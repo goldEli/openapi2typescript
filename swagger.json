@@ -1,0 +1,151 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "基于REST接口风格工单接口文档",
+    "version": "1.0",
+    "title": "定星科技 · 接口文档",
+    "termsOfService": "https://www.dx.com/",
+    "contact": {
+      "name": "定星科技",
+      "url": "https://www.dx.com/",
+      "email": "1352255400@qq.com"
+    },
+    "license": {
+      "name": "Apache License Version 2.0"
+    }
+  },
+  "host": "gateway-api.dev.staryuntech.com",
+  "basePath": "/api",
+  "schemes": [],
+  "consumes": [
+    "*/*"
+  ],
+  "produces": [
+    "*/*"
+  ],
+  "paths": {
+    "/flow/flowReProcessUser/queryApprover": {
+      "post": {
+        "tags": [
+          "用户端-审批已发起流程信息表-静态"
+        ],
+        "summary": "发起人通过流程ID与节点ID查询审批人信息(发起人自选数据)",
+        "operationId": "queryApproverUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "queryApproverDto",
+            "description": "queryApproverDto",
+            "required": true,
+            "schema": {
+              "originalRef": "FlowReQueryApproverDto",
+              "$ref": "#/definitions/FlowReQueryApproverDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "originalRef": "R«List«NodeUserBaseVo»»",
+              "$ref": "#/definitions/R«List«NodeUserBaseVo»»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "FlowReQueryApproverDto": {
+      "type": "object",
+      "required": [
+        "nodeId",
+        "processId"
+      ],
+      "properties": {
+        "nodeId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "node节点id",
+          "refType": null
+        },
+        "processId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "流程id",
+          "refType": null
+        }
+      },
+      "title": "FlowReQueryApproverDto"
+    },
+    "R«List«NodeUserBaseVo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "错误码：0成功，其他失败"
+        },
+        "data": {
+          "type": "array",
+          "description": "返回值",
+          "items": {
+            "originalRef": "NodeUserBaseVo",
+            "$ref": "#/definitions/NodeUserBaseVo"
+          }
+        },
+        "msg": {
+          "type": "string",
+          "description": "错误信息"
+        }
+      },
+      "title": "R«List«NodeUserBaseVo»»"
+    },
+    "NodeUserBaseVo": {
+      "type": "object",
+      "properties": {
+        "approverId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "审批人ID",
+          "refType": null
+        },
+        "avatar": {
+          "type": "string",
+          "description": "头像",
+          "refType": null
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "用户Id",
+          "refType": null
+        },
+        "name": {
+          "type": "string",
+          "description": "姓名",
+          "refType": null
+        }
+      },
+      "title": "NodeUserBaseVo"
+    }
+  }
+}

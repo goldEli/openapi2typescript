@@ -1,0 +1,21 @@
+<%
+const { utils, config, routes, modelTypes } = it;
+const { _, pascalCase } = utils;
+const dataContracts = config.modular ? _.map(modelTypes, "name") : [];
+%>
+
+
+
+<%
+/* TODO: outOfModule, combined should be attributes of route, which will allow to avoid duplication of code */
+%>
+
+<% if (routes.outOfModule) { %>
+ <% for (const { routes: outOfModuleRoutes = [] } of routes.outOfModule) { %>
+   <% for (const route of outOfModuleRoutes) { %>
+     <%~ includeFile('./route-type.ejs', { ...it, route }) %>
+   <% } %>
+ <% } %>
+<% } %>
+
+type RequestParams = any
