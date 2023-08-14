@@ -91,7 +91,7 @@ function capitalizeFirstLetter(word) {
 
  */
 export const <%~ route.routeName.usage %><%~ capitalizeFirstLetter(moduleName) %><%~ route.namespace ? '= ' : ' = ' %>(<%~ wrapperArgs %>)<%~ config.toJS ? `: ${describeReturnType()}` : "" %> =>
-    requestMethod<<%~ type %>, <%~ errorType %>>({
+window.requestMethod<<%~ type %>, <%~ errorType %>>({
         url: `<%~ path %>`,
         method: '<%~ _.upperCase(method) %>',
         <%~ queryTmpl ? `data: ${queryTmpl},` : '' %>

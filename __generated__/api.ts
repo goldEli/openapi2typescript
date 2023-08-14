@@ -136,7 +136,7 @@ type RequestParams = any;
  * @request GET:/flow/flowReField/getField
  */
 export const getFieldUsingGetFlow = (query: GetFieldUsingGetParams, params: RequestParams = {}) =>
-  requestMethod<RListFlowReFieldVo, void>({
+  window.requestMethod<RListFlowReFieldVo, void>({
     url: `/flow/flowReField/getField`,
     method: "GET",
     data: query,
