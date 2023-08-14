@@ -135,7 +135,7 @@ type RequestParams = any;
  * @summary 表单字段定义查询-静态数据
  * @request GET:/flow/flowReField/getField
  */
-export const getFieldUsingGetFlow = (query: GetFieldUsingGetParams, params: RequestParams = {}) =>
+export const getFieldUsingGet = (query: GetFieldUsingGetParams, params: RequestParams = {}) =>
   window.requestMethod<RListFlowReFieldVo, void>({
     url: `/flow/flowReField/getField`,
     method: "GET",
