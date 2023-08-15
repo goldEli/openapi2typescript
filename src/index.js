@@ -2,7 +2,7 @@
 
 const { generateApi, generateTemplates } = require("swagger-typescript-api");
 const path = require("path");
-const { createDirectory, createFile } = require("./utils")
+const { createDirectory, createFile, createSourcePath } = require("./utils")
 const fs = require("fs");
 const ncp = require("copy-paste");
 const log = require("./utils/log");
@@ -19,9 +19,11 @@ async function main() {
   }
 
   const root = process.cwd()
-  const generatedUrl = path.resolve(root, "./src/__generated__")
   const inputUrl = path.resolve(process.cwd(), "./swagger.json")
+  log.success('inputUrl' + inputUrl)
+  const templatePath = path.resolve(__dirname, "./template")
   await createFile(inputUrl, JSON.stringify(openApiJSON))
+  log.error(templatePath)
 
   generateApi({
     name: "api.ts",
@@ -44,7 +46,7 @@ async function main() {
     //   },
     //   // ...
     // },
-    templates: path.resolve(__dirname, "./src/template"),
+    templates: templatePath,
     // httpClientType: "axios", // or "fetch"
     // defaultResponseAsSuccess: false,
     // generateClient: true,
@@ -116,10 +118,11 @@ async function main() {
     },
   })
     .then(async ({ files, configuration }) => {
-      const { requestMethod, moduleName } = global
-      const dirName = path.join(generatedUrl, moduleName)
-      const fileName = path.join(dirName, `${requestMethod}.ts`)
+      // const { requestMethod, moduleName } = global
+      // const dirName = path.join(generatedUrl, moduleName)
+      // const fileName = path.join(dirName, `${requestMethod}.ts`)
       // console.log(files, 123)
+      const { fileName, dirName } = createSourcePath()
       await createDirectory(dirName)
       files.forEach(async ({ fileContent, name }) => {
         // fs.writeFile(fileName, content);

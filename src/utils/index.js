@@ -1,6 +1,37 @@
 const fs = require('fs');
 const path = require('path');
 
+const getCamelCaseString = (arr) => {
+    // 使用正则表达式模式进行匹配
+    const pattern = /^[A-Za-z]+$/;
+
+    const str = arr
+        .filter((item) => pattern.test(item))
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join("");
+
+    return str.charAt(0).toLowerCase() + str.slice(1);
+};
+
+
+const generatedUrl = path.resolve(process.cwd(), "./src/__generated__")
+function createSourcePath() {
+    const { requestMethod, moduleName, apiUrl } = global
+
+    const paths = apiUrl.split('/') ?? []
+    let dirName = getCamelCaseString(paths.slice(0, -1))
+    if (dirName) {
+        dirName = path.join(generatedUrl, dirName)
+    } else {
+        dirName = path.join(generatedUrl, moduleName)
+    }
+    const fileName = path.join(dirName, `${requestMethod}.ts`)
+
+    return {
+        dirName,
+        fileName
+    }
+}
 
 function createFile(filePath, content) {
     return new Promise((resolve, reject) => {
@@ -49,6 +80,7 @@ function createDirectory(directoryPath) {
 
 const utils = {
     createDirectory,
-    createFile
+    createFile,
+    createSourcePath
 }
 module.exports = utils;
