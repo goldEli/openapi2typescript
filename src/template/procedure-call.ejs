@@ -12,6 +12,10 @@ const pathParamsNames = _.map(pathParams, "name");
 
 const isFetchTemplate = config.httpClientType === HTTP_CLIENT.FETCH;
 
+global.moduleName = moduleName
+
+global.requestMethod = route.routeName.usage
+
 const requestConfigParam = {
     name: specificArgNameResolver.resolve(RESERVED_REQ_PARAMS_ARG_NAMES),
     optional: true,
