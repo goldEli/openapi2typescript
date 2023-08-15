@@ -44,7 +44,7 @@ async function main() {
     //   },
     //   // ...
     // },
-    templates: path.resolve(process.cwd(), "./src/template"),
+    templates: path.resolve(__dirname, "./src/template"),
     // httpClientType: "axios", // or "fetch"
     // defaultResponseAsSuccess: false,
     // generateClient: true,
