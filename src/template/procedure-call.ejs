@@ -48,6 +48,11 @@ const wrapperArgs = _
     .sortBy(rawWrapperArgs, [o => o.optional])
     .map(argToTmpl)
     .join(', ')
+const reqParams = _
+    // Sort by optionality
+    .sortBy(rawWrapperArgs, [o => o.optional])[0]
+
+    console.log('reqParams',reqParams.type)
 
 // RequestParams["type"]
 const requestContentKind = {
@@ -61,6 +66,10 @@ const responseContentKind = {
     "JSON": '"json"',
     "IMAGE": '"blob"',
     "FORM_DATA": isFetchTemplate ? '"formData"' : '"document"'
+}
+
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 const bodyTmpl = _.get(payload, "name") || null;
@@ -105,3 +114,6 @@ window.requestMethod<<%~ type %>, <%~ errorType %>>({
         <%~ responseFormatTmpl ? `format: ${responseFormatTmpl},` : '' %>
         ...<%~ _.get(requestConfigParam, "name") %>,
     })<%~ route.namespace ? '' : '' %>
+
+export type <%~ capitalizeFirstLetter(route.routeName.usage) %>Params = <%~ reqParams.type %>;
+export type <%~ capitalizeFirstLetter(route.routeName.usage) %>Res = <%~ type %>['data'];

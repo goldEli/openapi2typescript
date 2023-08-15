@@ -10,6 +10,7 @@ const text = ncp.paste();
 
 
 async function main() {
+  log.success("开始生成API文件");
   let openApiJSON;
   try {
     openApiJSON = JSON.parse(text);

@@ -4,13 +4,15 @@ const path = require('path');
 const getCamelCaseString = (arr) => {
     // 使用正则表达式模式进行匹配
     const pattern = /^[A-Za-z]+$/;
+    console.log('arr', arr)
 
     const str = arr
         .filter((item) => pattern.test(item))
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join("");
 
-    return str.charAt(0).toLowerCase() + str.slice(1);
+    const ret = str.charAt(0).toLowerCase() + str.slice(1);
+    return ret
 };
 
 
