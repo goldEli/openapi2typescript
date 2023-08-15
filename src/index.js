@@ -1,10 +1,12 @@
+#! /usr/bin/env node
+
 const { generateApi, generateTemplates } = require("swagger-typescript-api");
 const path = require("path");
 const { createDirectory, createFile } = require("./utils")
 const fs = require("fs");
 const ncp = require("copy-paste");
+const log = require("./utils/log");
 const text = ncp.paste();
-// const chalk = require("chalk");
 
 
 async function main() {
@@ -12,7 +14,7 @@ async function main() {
   try {
     openApiJSON = JSON.parse(text);
   } catch (error) {
-    console.log("请复制符合OpenAPI结构数据！！！");
+    log.error("请复制符合OpenAPI结构数据！！！");
     return;
   }
 
@@ -119,9 +121,10 @@ async function main() {
       const fileName = path.join(dirName, `${requestMethod}.ts`)
       // console.log(files, 123)
       await createDirectory(dirName)
-      files.forEach(({ fileContent, name }) => {
+      files.forEach(async ({ fileContent, name }) => {
         // fs.writeFile(fileName, content);
-        createFile(fileName, fileContent)
+        await createFile(fileName, fileContent)
+        log.success("api 生成成功:" + fileName)
       });
     })
     .catch((e) => console.error(e));
