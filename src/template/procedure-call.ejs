@@ -116,4 +116,5 @@ window.requestMethod<<%~ type %>, <%~ errorType %>>({
     })<%~ route.namespace ? '' : '' %>
 
 export type <%~ capitalizeFirstLetter(route.routeName.usage) %>Params = <%~ reqParams.type %>;
-export type <%~ capitalizeFirstLetter(route.routeName.usage) %>Res = <%~ type %>['data'];
+export type <%~ capitalizeFirstLetter(route.routeName.usage) %>Res = <%~ type %> extends {data?: unknown} ? <%~ type %>['data'] : null;
+
