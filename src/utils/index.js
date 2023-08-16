@@ -16,7 +16,7 @@ const getCamelCaseString = (arr) => {
 };
 
 
-const generatedUrl = path.resolve(process.cwd(), "./src/__generated__")
+const generatedUrl = path.resolve(process.cwd(), "./src/_api")
 function createSourcePath() {
     const { requestMethod, moduleName, apiUrl } = global
 
