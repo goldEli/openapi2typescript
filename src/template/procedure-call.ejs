@@ -115,6 +115,7 @@ window.requestMethod<<%~ type %>, <%~ errorType %>>({
         ...<%~ _.get(requestConfigParam, "name") %>,
     })<%~ route.namespace ? '' : '' %>
 
+type GetData<T> = T extends { data?: unknown } ? T["data"] : null;
 export type <%~ capitalizeFirstLetter(route.routeName.usage) %>P = <%~ reqParams.type %>;
-export type <%~ capitalizeFirstLetter(route.routeName.usage) %>R = <%~ type %> extends {data?: unknown} ? <%~ type %>['data'] : null;
+export type <%~ capitalizeFirstLetter(route.routeName.usage) %>R = GetData<<%~ type %>>;
 
