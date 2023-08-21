@@ -95,6 +95,8 @@ function capitalizeFirstLetter(word) {
 }
 
 %>
+
+type GetData<T> = T extends { data?: unknown } ? T["data"] : null;
 /**
 <%~ routeDocs.description %>
 
@@ -115,7 +117,6 @@ window.requestMethod<<%~ type %>, <%~ errorType %>>({
         ...<%~ _.get(requestConfigParam, "name") %>,
     })<%~ route.namespace ? '' : '' %>
 
-type GetData<T> = T extends { data?: unknown } ? T["data"] : null;
 export type <%~ capitalizeFirstLetter(route.routeName.usage) %>P = <%~ reqParams.type %>;
-export type <%~ capitalizeFirstLetter(route.routeName.usage) %>R = GetData<<%~ type %>>;
 
+export type <%~ capitalizeFirstLetter(route.routeName.usage) %>R = GetData<<%~ type %>>;
