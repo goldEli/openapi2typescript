@@ -3,6 +3,7 @@
     "openapi-typescript": "^5.4.0"
   },
   "name": "ifun-o2t",
+  "description": "A tool for converting OpenAPI to TypeScript",
   "version": "1.0.8",
   "main": "index.js",
   "bin": {
@@ -40,6 +41,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": ""
+  "license": "ISC"
 }
