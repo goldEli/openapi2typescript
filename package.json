@@ -3,7 +3,7 @@
     "openapi-typescript": "^5.4.0"
   },
   "name": "ifun-o2t",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "index.js",
   "bin": {
     "ifun-o2t": "./src/index.js"
