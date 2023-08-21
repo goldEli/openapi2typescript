@@ -16,16 +16,16 @@ const getCamelCaseString = (arr) => {
 };
 
 
-const generatedUrl = path.resolve(process.cwd(), "./src/_api")
-function createSourcePath() {
+
+function createSourcePath(outputPath) {
     const { requestMethod, moduleName, apiUrl } = global
 
     const paths = apiUrl.split('/') ?? []
     let dirName = getCamelCaseString(paths.slice(0, -1))
     if (dirName) {
-        dirName = path.join(generatedUrl, dirName)
+        dirName = path.join(outputPath, dirName)
     } else {
-        dirName = path.join(generatedUrl, moduleName)
+        dirName = path.join(outputPath, moduleName)
     }
     const fileName = path.join(dirName, `${requestMethod}.ts`)
 

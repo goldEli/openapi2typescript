@@ -6,8 +6,20 @@ const { createDirectory, createFile, createSourcePath } = require("./utils")
 const fs = require("fs");
 const ncp = require("copy-paste");
 const log = require("./utils/log");
-const text = ncp.paste();
+const { Command } = require("commander");
 
+const text = ncp.paste();
+const program = new Command();
+
+program
+  .version("1.0.0")
+  .description("Check Chinese Tool")
+  .option("-o, --out  [value]", "output path default ./src/_api")
+  .parse(process.argv);
+
+const options = program.opts();
+
+const outputPath = path.resolve(process.cwd(), options.out ? options.out : "./src/_api")
 
 async function main() {
   log.success("开始生成API文件");
@@ -19,7 +31,6 @@ async function main() {
     return;
   }
 
-  const root = process.cwd()
   const inputUrl = path.resolve(process.cwd(), "./swagger.json")
   log.success('inputUrl' + inputUrl)
   const templatePath = path.resolve(__dirname, "./template")
@@ -123,7 +134,7 @@ async function main() {
       // const dirName = path.join(generatedUrl, moduleName)
       // const fileName = path.join(dirName, `${requestMethod}.ts`)
       // console.log(files, 123)
-      const { fileName, dirName } = createSourcePath()
+      const { fileName, dirName } = createSourcePath(outputPath)
       await createDirectory(dirName)
       files.forEach(async ({ fileContent, name }) => {
         // fs.writeFile(fileName, content);
