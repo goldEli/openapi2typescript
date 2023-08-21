@@ -4,7 +4,7 @@
   },
   "name": "ifun-o2t",
   "description": "A tool for converting OpenAPI to TypeScript",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "index.js",
   "bin": {
     "ifun-o2t": "./src/index.js"
