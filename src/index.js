@@ -21,23 +21,14 @@ const options = program.opts();
 
 const outputPath = path.resolve(process.cwd(), options.out ? options.out : "./src/_api")
 
-async function main() {
-  log.success("开始生成API文件");
-  let openApiJSON;
-  try {
-    openApiJSON = JSON.parse(text);
-  } catch (error) {
-    log.error("请复制符合OpenAPI结构数据！！！");
-    return;
-  }
-
+const handleOpenApi = async (data) => {
   const inputUrl = path.resolve(process.cwd(), "./swagger.json")
   log.success('inputUrl' + inputUrl)
   const templatePath = path.resolve(__dirname, "./template")
-  await createFile(inputUrl, JSON.stringify(openApiJSON))
+  await createFile(inputUrl, JSON.stringify(data))
   log.error(templatePath)
 
-  generateApi({
+  await generateApi({
     name: "api.ts",
     // set to `false` to prevent the tool from writing to disk
     // output: path.resolve(process.cwd(), "./__generated__"),
@@ -152,6 +143,27 @@ async function main() {
   //   silent: false,
   //   rewrite: false,
   // });
+}
+
+async function main() {
+  log.success("开始生成API文件");
+  let openApiJSON;
+  try {
+    openApiJSON = JSON.parse(text);
+  } catch (error) {
+    log.error("请复制符合OpenAPI结构数据！！！");
+    return;
+  }
+  console.log(openApiJSON)
+  const paths = openApiJSON.paths;
+  for (const key in paths) {
+    newPaths = { [key]: paths[key] }
+    await handleOpenApi({
+      ...openApiJSON,
+      paths: newPaths
+    })
+  }
+
 }
 
 main()
