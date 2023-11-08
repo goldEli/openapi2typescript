@@ -2,7 +2,7 @@
 
 const { generateApi, generateTemplates } = require("swagger-typescript-api");
 const path = require("path");
-const { createDirectory, createFile, createSourcePath } = require("./utils")
+const { createDirectory, createFile, createSourcePath, allowCreate } = require("./utils")
 const fs = require("fs");
 const ncp = require("copy-paste");
 const log = require("./utils/log");
@@ -15,6 +15,7 @@ program
   .version("1.0.0")
   .description("Check Chinese Tool")
   .option("-o, --out  [value]", "output path default ./src/_api")
+  .option("-a, --api  [value]", "default 默认生成全部")
   .parse(process.argv);
 
 const options = program.opts();
@@ -121,11 +122,13 @@ const handleOpenApi = async (data) => {
     },
   })
     .then(async ({ files, configuration }) => {
-      // const { requestMethod, moduleName } = global
-      // const dirName = path.join(generatedUrl, moduleName)
-      // const fileName = path.join(dirName, `${requestMethod}.ts`)
-      // console.log(files, 123)
       const { fileName, dirName } = createSourcePath(outputPath)
+      if (
+        !allowCreate(options.api)
+      ) {
+        return
+      }
+
       await createDirectory(dirName)
       files.forEach(async ({ fileContent, name }) => {
         // fs.writeFile(fileName, content);
