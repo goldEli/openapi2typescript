@@ -2,7 +2,7 @@
 
 const { generateApi, generateTemplates } = require("swagger-typescript-api");
 const path = require("path");
-const { createDirectory, createFile, createSourcePath, allowCreate } = require("./utils")
+const { createDirectory, createFile, createSourcePath, notAllowCreate } = require("./utils")
 const fs = require("fs");
 const ncp = require("copy-paste");
 const log = require("./utils/log");
@@ -15,7 +15,8 @@ program
   .version("1.0.0")
   .description("Check Chinese Tool")
   .option("-o, --out  [value]", "output path default ./src/_api")
-  .option("-a, --api  [value]", "default 默认生成全部")
+  .option("-i, --include  [value]", "指定生成的api，不能以斜杠开头, 例如：api/assets/maintain/save")
+  .option("-a, --all  [value]", "生成全部api对应的代码")
   .parse(process.argv);
 
 const options = program.opts();
@@ -124,7 +125,10 @@ const handleOpenApi = async (data) => {
     .then(async ({ files, configuration }) => {
       const { fileName, dirName } = createSourcePath(outputPath)
       if (
-        !allowCreate(options.api)
+        notAllowCreate({
+          api: options.include,
+          isAll: options.all
+        })
       ) {
         return
       }

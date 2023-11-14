@@ -15,17 +15,19 @@ const getCamelCaseString = (arr) => {
     return ret
 };
 
-function allowCreate(str) {
+function notAllowCreate(option) {
+
+    const { api: str, isAll } = option
     const { apiUrl } = global
-    console.log('docPath, str', apiUrl, str)
-    if (!str) {
-        return true
+    console.log('docPath, str', apiUrl, str, isAll)
+    if (isAll) {
+        return false
     }
     if (apiUrl === `/${str}`) {
-        return true
+        return false
     }
 
-    return false
+    return true
 }
 
 
@@ -96,6 +98,6 @@ const utils = {
     createDirectory,
     createFile,
     createSourcePath,
-    allowCreate
+    notAllowCreate
 }
 module.exports = utils;
