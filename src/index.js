@@ -12,7 +12,7 @@ const text = ncp.paste();
 const program = new Command();
 
 program
-  .version("1.0.0")
+  .version("1.0.12")
   .description("Check Chinese Tool")
   .option("-o, --out  [value]", "output path default ./src/_api")
   .option("-i, --include  [value]", "指定生成的api，不能以斜杠开头, 例如：api/assets/maintain/save")
