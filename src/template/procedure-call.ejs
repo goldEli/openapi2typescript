@@ -9,12 +9,14 @@ const routeDocs = includeFile("./route-docs", { config, route, utils });
 const queryName = (query && query.name) || "query";
 const pathParams = _.values(parameters);
 const pathParamsNames = _.map(pathParams, "name");
-
 const isFetchTemplate = config.httpClientType === HTTP_CLIENT.FETCH;
 
 global.moduleName = moduleName
 global.requestMethod = route.routeName.usage
-global.apiUrl = path
+const basePath = config.originalSchema.basePath
+const newPath = basePath ? basePath + path : path
+global.apiUrl = newPath
+global.docPath = path
 
 const requestConfigParam = {
     name: specificArgNameResolver.resolve(RESERVED_REQ_PARAMS_ARG_NAMES),
@@ -52,7 +54,7 @@ const reqParams = _
     // Sort by optionality
     .sortBy(rawWrapperArgs, [o => o.optional])[0]
 
-    console.log('reqParams',reqParams.type)
+    // console.log('reqParams',reqParams.type)
 
 // RequestParams["type"]
 const requestContentKind = {
@@ -96,7 +98,6 @@ function capitalizeFirstLetter(word) {
 
 %>
 
-type GetData<T> = T extends { data?: unknown } ? T["data"] : null;
 /**
 <%~ routeDocs.description %>
 
@@ -107,7 +108,7 @@ type GetData<T> = T extends { data?: unknown } ? T["data"] : null;
  */
 export const <%~ route.routeName.usage %><%~ route.namespace ? '= ' : ' = ' %>(<%~ wrapperArgs %>)<%~ config.toJS ? `: ${describeReturnType()}` : "" %> =>
 window.requestMethod<<%~ type %>, <%~ errorType %>>({
-        url: `<%~ path %>`,
+        url: `<%~ newPath %>`,
         method: '<%~ _.upperCase(method) %>',
         <%~ queryTmpl ? `data: ${queryTmpl},` : '' %>
         <%~ bodyTmpl ? `data: ${bodyTmpl},` : '' %>

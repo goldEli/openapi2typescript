@@ -7,7 +7,7 @@ const getCamelCaseString = (arr) => {
     console.log('arr', arr)
 
     const str = arr
-        .filter((item) => pattern.test(item))
+        .filter((item) => !!item && item !== 'api')
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join("");
 
@@ -15,6 +15,20 @@ const getCamelCaseString = (arr) => {
     return ret
 };
 
+function notAllowCreate(option) {
+
+    const { api: str, isAll } = option
+    const { apiUrl } = global
+    console.log('docPath, str', apiUrl, str, isAll)
+    if (isAll) {
+        return false
+    }
+    if (apiUrl === `/${str}`) {
+        return false
+    }
+
+    return true
+}
 
 
 function createSourcePath(outputPath) {
@@ -83,6 +97,7 @@ function createDirectory(directoryPath) {
 const utils = {
     createDirectory,
     createFile,
-    createSourcePath
+    createSourcePath,
+    notAllowCreate
 }
 module.exports = utils;

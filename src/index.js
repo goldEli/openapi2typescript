@@ -2,7 +2,7 @@
 
 const { generateApi, generateTemplates } = require("swagger-typescript-api");
 const path = require("path");
-const { createDirectory, createFile, createSourcePath } = require("./utils")
+const { createDirectory, createFile, createSourcePath, notAllowCreate } = require("./utils")
 const fs = require("fs");
 const ncp = require("copy-paste");
 const log = require("./utils/log");
@@ -12,32 +12,25 @@ const text = ncp.paste();
 const program = new Command();
 
 program
-  .version("1.0.0")
+  .version("1.0.12")
   .description("Check Chinese Tool")
   .option("-o, --out  [value]", "output path default ./src/_api")
+  .option("-i, --include  [value]", "指定生成的api，不能以斜杠开头, 例如：api/assets/maintain/save")
+  .option("-a, --all  [value]", "生成全部api对应的代码")
   .parse(process.argv);
 
 const options = program.opts();
 
 const outputPath = path.resolve(process.cwd(), options.out ? options.out : "./src/_api")
 
-async function main() {
-  log.success("开始生成API文件");
-  let openApiJSON;
-  try {
-    openApiJSON = JSON.parse(text);
-  } catch (error) {
-    log.error("请复制符合OpenAPI结构数据！！！");
-    return;
-  }
-
+const handleOpenApi = async (data) => {
   const inputUrl = path.resolve(process.cwd(), "./swagger.json")
   log.success('inputUrl' + inputUrl)
   const templatePath = path.resolve(__dirname, "./template")
-  await createFile(inputUrl, JSON.stringify(openApiJSON))
+  await createFile(inputUrl, JSON.stringify(data))
   log.error(templatePath)
 
-  generateApi({
+  await generateApi({
     name: "api.ts",
     // set to `false` to prevent the tool from writing to disk
     // output: path.resolve(process.cwd(), "./__generated__"),
@@ -130,11 +123,16 @@ async function main() {
     },
   })
     .then(async ({ files, configuration }) => {
-      // const { requestMethod, moduleName } = global
-      // const dirName = path.join(generatedUrl, moduleName)
-      // const fileName = path.join(dirName, `${requestMethod}.ts`)
-      // console.log(files, 123)
       const { fileName, dirName } = createSourcePath(outputPath)
+      if (
+        notAllowCreate({
+          api: options.include,
+          isAll: options.all
+        })
+      ) {
+        return
+      }
+
       await createDirectory(dirName)
       files.forEach(async ({ fileContent, name }) => {
         // fs.writeFile(fileName, content);
@@ -152,6 +150,27 @@ async function main() {
   //   silent: false,
   //   rewrite: false,
   // });
+}
+
+async function main() {
+  log.success("开始生成API文件");
+  let openApiJSON;
+  try {
+    openApiJSON = JSON.parse(text);
+  } catch (error) {
+    log.error("请复制符合OpenAPI结构数据！！！");
+    return;
+  }
+  console.log(openApiJSON)
+  const paths = openApiJSON.paths;
+  for (const key in paths) {
+    newPaths = { [key]: paths[key] }
+    await handleOpenApi({
+      ...openApiJSON,
+      paths: newPaths
+    })
+  }
+
 }
 
 main()
