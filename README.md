@@ -14,3 +14,7 @@ npx ifun-o2t -o ./src/api
 # 指定生成 api 注意前面的斜线一定要去掉
 npx ifun-o2t -a api/msg-center/message/getList
 ```
+
+```shell
+node ./src/index.js -i api/company/dingTalkAttendanceStatistics/saveBreakfast
+```
